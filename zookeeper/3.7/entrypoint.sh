@@ -18,7 +18,7 @@ print_welcome_page
 
 if [[ "$*" = *"/opt/dtweave/scripts/zookeeper/3.7/run.sh"* || "$*" = *"/run.sh"* ]]; then
     info "** Starting ZooKeeper setup **"
-    /opt/dtweave/scripts/zookeeper/3.7/pre-run.sh
+    /opt/dtweave/scripts/zookeeper/3.7/post-start.sh
     info "** ZooKeeper setup finished! **"
 fi
 
