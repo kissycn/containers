@@ -121,7 +121,7 @@ zookeeper_generate_conf() {
     zookeeper_conf_set "$ZOO_CONF_FILE" initLimit "$ZOO_INIT_LIMIT"
     zookeeper_conf_set "$ZOO_CONF_FILE" syncLimit "$ZOO_SYNC_LIMIT"
     zookeeper_conf_set "$ZOO_CONF_FILE" dataDir "$ZOO_DATA_DIR"
-    [[ -n "$ZOO_DATA_LOG_DIR" ]] && zookeeper_conf_set "$ZOO_CONF_FILE" dataLogDir "$ZOO_DATA_LOG_DIR"
+    zookeeper_conf_set "$ZOO_CONF_FILE" dataLogDir "$ZOO_DATA_LOG_DIR"
     zookeeper_conf_set "$ZOO_CONF_FILE" clientPort "$CLI_PORT_NUMBER"
     # Set log level
     if [ -f "${ZOO_CONF_DIR}/logback.xml" ]; then

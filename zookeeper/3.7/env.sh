@@ -21,6 +21,7 @@ export MODULE="${MODULE:-zookeeper}"
 # Paths
 export ZOO_BASE_DIR="/opt/zookeeper"
 export ZOO_DATA_DIR="/zookeeper/data"
+export ZOO_DATA_LOG_DIR="/zookeeper/log"
 export ZOO_CONF_DIR="${ZOO_BASE_DIR}/conf"
 export ZOO_CONF_FILE="${ZOO_CONF_DIR}/zoo.cfg"
 export ZOO_LOG_DIR="${ZOO_BASE_DIR}/logs"
