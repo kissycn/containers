@@ -35,7 +35,7 @@ export ZOO_DAEMON_USER="zookeeper"
 export ZOO_DAEMON_GROUP="zookeeper"
 
 # K8S param
-export K8S_REPLICAS="${REPLICAS:-0}"
+export K8S_REPLICAS="${K8S_REPLICAS:-0}"
 export CLUSTER_DOMAIN="${CLUSTER_DOMAIN:-cluster.local}"
 
 # ZooKeeper cluster configuration
