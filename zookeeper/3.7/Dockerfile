@@ -40,7 +40,6 @@ RUN mkdir -p /tmp/dtweave/pkg/cache/ && cd /tmp/dtweave/pkg/cache/ && \
 RUN apt-get autoremove --purge -y curl && \
     apt-get update && apt-get upgrade -y && \
     apt-get clean && rm -rf /var/lib/apt/lists /var/cache/apt/archives
-RUN chmod g+rwX /opt/dtweave
 
 RUN /opt/scripts/zookeeper/3.7/setup.sh
 ENV APP_VERSION="3.7.1" \

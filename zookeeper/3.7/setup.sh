@@ -17,7 +17,7 @@ set -o pipefail
 ensure_user_exists "$ZOO_DAEMON_USER" --uid 10000 --group "$ZOO_DAEMON_GROUP"
 
 # Ensure directories used by ZooKeeper exist and have proper ownership and permissions
-for dir in "$ZOO_DATA_DIR" "$ZOO_CONF_DIR" "$ZOO_LOG_DIR"; do
+for dir in "$ZOO_DATA_DIR" "$ZOO_DATA_LOG_DIR" "$ZOO_CONF_DIR" "$ZOO_LOG_DIR"; do
     ensure_dir_exists "$dir"
 done
 

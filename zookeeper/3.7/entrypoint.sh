@@ -16,9 +16,9 @@ set -o pipefail
 
 print_welcome_page
 
-if [[ "$*" = *"/opt/dtweave/scripts/zookeeper/3.7/run.sh"* || "$*" = *"/run.sh"* ]]; then
+if [[ "$*" = *"/opt/scripts/zookeeper/3.7/run.sh"* || "$*" = *"/run.sh"* ]]; then
     info "** Starting ZooKeeper setup **"
-    /opt/dtweave/scripts/zookeeper/3.7/post-start.sh
+    /opt/scripts/zookeeper/3.7/post-start.sh
     info "** ZooKeeper setup finished! **"
 fi
 
