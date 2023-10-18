@@ -57,6 +57,7 @@ zookeeper_initialize() {
 # if not present, set based on POD hostname,hostname like：web-0、web-1、web-2
 #########################
 init_zookeeper_server_id() {
+    info "Init ZooKeeper server id..."
     if [[ -f "${ZOO_DATA_ID_DIR}" ]]; then
         export ZOO_SERVER_ID=$(cat "${ZOO_DATA_ID_DIR}")
     else
@@ -83,6 +84,7 @@ init_zookeeper_server_id() {
 # if not present, set based on POD hostname,hostname like：web-0、web-1、web-2
 #########################
 zookeeper_generate_servers(){
+    info "Generate ZooKeeper servers..."
     local replicas=${K8S_REPLICAS}
     if [[ $HOSTNAME =~ (.*)-([0-9]+)$ ]]; then
       export ZOO_SERVER_NAME=${BASH_REMATCH[1]}
