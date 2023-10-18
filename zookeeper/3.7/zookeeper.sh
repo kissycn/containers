@@ -61,7 +61,6 @@ init_zookeeper_server_id() {
         export ZOO_SERVER_ID=$(cat "${ZOO_DATA_ID_DIR}")
     else
         if [[ $HOSTNAME =~ (.*)-([0-9]+)$ ]]; then
-            #export ZOO_SERVER_ID=$((1 + ${BASH_REMATCH[2]} ))
             export ZOO_SERVER_ID=${BASH_REMATCH[2]}
         else
             echo "Failed to get index from hostname $HOSTNAME"
@@ -93,7 +92,9 @@ zookeeper_generate_servers(){
     # Add zookeeper servers to configuration
     if [[ $replicas -gt 1 ]]; then
       for ((i = 0; i < $replicas; i++)); do
-        local endpoints=$(printf "%s-%d.%s.%s.svc.%s:%d:%d;%d" $ZOO_SERVER_NAME ${i} $SERVICE_NAME $KUBERNETES_NAMESPACE $CLUSTER_DOMAIN $FOLLOWER_PORT $ELECTION_PORT $ZOO_PORT_NUMBER)
+        #local endpoints=$(printf "%s-%d.%s.%s.svc.%s:%d:%d;%d" $ZOO_SERVER_NAME ${i} $SERVICE_NAME $KUBERNETES_NAMESPACE $CLUSTER_DOMAIN $FOLLOWER_PORT $ELECTION_PORT $ZOO_PORT_NUMBER)
+        local FQDN=$(echo "${KB_POD_FQDN}" | sed "s/[0-9]/$i/")
+        local endpoints=$(printf "%s:%d:%d;%d" $FQDN $FOLLOWER_PORT $ELECTION_PORT $CLI_PORT_NUMBER)
         info "Adding server: ${i}"
         zookeeper_conf_set "$ZOO_SERVERS_DIR" "server.${i}" "${endpoints}"
       done
@@ -121,7 +122,7 @@ zookeeper_generate_conf() {
     zookeeper_conf_set "$ZOO_CONF_FILE" syncLimit "$ZOO_SYNC_LIMIT"
     zookeeper_conf_set "$ZOO_CONF_FILE" dataDir "$ZOO_DATA_DIR"
     [[ -n "$ZOO_DATA_LOG_DIR" ]] && zookeeper_conf_set "$ZOO_CONF_FILE" dataLogDir "$ZOO_DATA_LOG_DIR"
-    zookeeper_conf_set "$ZOO_CONF_FILE" clientPort "$ZOO_PORT_NUMBER"
+    zookeeper_conf_set "$ZOO_CONF_FILE" clientPort "$CLI_PORT_NUMBER"
     # Set log level
     if [ -f "${ZOO_CONF_DIR}/logback.xml" ]; then
       # Zookeeper 3.8+
