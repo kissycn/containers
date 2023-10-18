@@ -116,6 +116,8 @@ zookeeper_generate_servers(){
 #   None
 #########################
 zookeeper_generate_conf() {
+    info "Generate ZooKeeper Conf..."
+
     cp "${ZOO_CONF_DIR}/zoo_sample.cfg" "$ZOO_CONF_FILE"
     echo >>"$ZOO_CONF_FILE"
 
