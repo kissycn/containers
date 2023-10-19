@@ -1,4 +1,4 @@
-FROM docker.io/dtweave/minideb:bullseye
+FROM docker.io/dtweave/minideb-java8:bullseye
 
 ARG TARGETARCH
 
@@ -9,11 +9,11 @@ LABEL org.opencontainers.image.base.name="docker.io/dtweave/minideb:bullseye" \
       org.opencontainers.image.version="3.7.1"
 
 ENV HOME="/" \
-    OS_ARCH="${TARGETARCH:-arm64}" \
+    OS_ARCH="${TARGETARCH:-amd64}" \
     OS_FLAVOUR="debian-11" \
     OS_NAME="linux" \
     PATH="/opt/common/bin:/opt/java/bin:/opt/zookeeper/bin:$PATH" \
-    DOWNLOAD_URL="https://downloads.bitnami.com"
+    DOWNLOAD_URL="http://downloads.dtweave.com:9000"
 
 COPY *.sh /opt/scripts/zookeeper/3.7/
 
@@ -22,9 +22,6 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 #RUN install_packages ca-certificates curl procps
 RUN mkdir -p /tmp/dtweave/pkg/cache/ && cd /tmp/dtweave/pkg/cache/ && \
     COMPONENTS=( \
-#      "yq-4.32.2-0-linux-${OS_ARCH}-debian-11" \
-#      "gosu-1.16.0-3-linux-${OS_ARCH}-debian-11" \
-      "java-1.8.362-4-linux-${OS_ARCH}-debian-11" \
       "zookeeper-3.7.1-164-linux-${OS_ARCH}-debian-11" \
     ) && \
     for COMPONENT in "${COMPONENTS[@]}"; do \
@@ -47,7 +44,6 @@ ENV APP_VERSION="3.7.1" \
     APP_NAME="zookeeper"
 
 EXPOSE 2181 2888 3888 8080
-#USER 1000
 
 ENTRYPOINT [ "/opt/scripts/zookeeper/3.7/entrypoint.sh" ]
 CMD [ "/opt/scripts/zookeeper/3.7/run.sh" ]
