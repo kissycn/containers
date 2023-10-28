@@ -32,4 +32,4 @@ export PATH=$PATH:$HADOOP_HOME/sbin
 export HADOOP_DAEMON_USER="hadoop"
 export HADOOP_DAEMON_GROUP="hadoop"
 
-export DEBUG_MODEL="${DEBUG_MODEL:-false}"
+export DEBUG_MODEL="${DEBUG_MODEL:-true}"
