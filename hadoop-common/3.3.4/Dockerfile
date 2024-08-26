@@ -1,16 +1,16 @@
-FROM docker.io/dtweave/hadoop-common:v3.3.4
+FROM docker.io/dtweave/minideb-java8:bookworm
 
 ARG TARGETARCH
 
-LABEL org.opencontainers.image.base.name="docker.io/dtweave/minideb:bullseye" \
+LABEL org.opencontainers.image.base.name="docker.io/dtweave/minideb:bookworm" \
       org.opencontainers.image.licenses="Apache-2.0" \
-      org.opencontainers.image.ref.name="3.3.4-debian-11-r119" \
+      org.opencontainers.image.ref.name="3.3.4-debian-12-r3" \
       org.opencontainers.image.title="hadoop-hdfs" \
       org.opencontainers.image.version="3.3.4"
 
 ENV HOME="/" \
     OS_ARCH="${TARGETARCH:-amd64}" \
-    OS_FLAVOUR="debian-11" \
+    OS_FLAVOUR="debian-12" \
     HADOOP_HOME="/opt/hadoop-3.3.4" \
     PATH=$PATH:$HADOOP_HOME/bin \
     PATH=$PATH:$HADOOP_HOME/sbin \
