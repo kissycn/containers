@@ -11,12 +11,9 @@ LABEL org.opencontainers.image.base.name="docker.io/dtweave/minideb:bookworm" \
 ENV HOME="/" \
     OS_ARCH="${TARGETARCH:-amd64}" \
     OS_FLAVOUR="debian-12" \
-    HADOOP_HOME="/opt/hadoop-3.3.4" \
-    PATH=$PATH:$HADOOP_HOME/bin \
-    PATH=$PATH:$HADOOP_HOME/sbin \
     OS_NAME="linux"
 
-COPY hadoop-3.3.4 /opt/hadoop-3.3.4
+COPY hadoop-3.3.4 /opt/software/hadoop-3.3.4
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 

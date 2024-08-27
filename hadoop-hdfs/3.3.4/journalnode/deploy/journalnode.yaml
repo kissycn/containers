@@ -44,6 +44,14 @@ spec:
         app: hdfs-journalnode
         release: my-hdfs-journalnode
     spec:
+      initContainers:
+        - name: init-hadoop-common
+          image: dtweave/hadoop-common:v3.3.4
+          imagePullPolicy: IfNotPresent
+          command: [ 'sh', '-c', 'cp -r /opt/software/hadoop-3.3.4/* /opt/hadoop-3.3.4' ]
+          volumeMounts:
+            - name: hadoop-common
+              mountPath: /opt/hadoop-3.3.4
       containers:
         - name: hdfs-journalnode
           image: dtweave/hdfs-journalnode:v3.3.4-1.0.0
@@ -58,19 +66,18 @@ spec:
             - name: edits-dir
               mountPath: /hadoop/dfs/journal
               subPath: journal
-#            - name: hadoop-home
-#              mountPath: /opt/dtweave/hadoop-3.3.5
             - name: hdfs-config
               mountPath: /hadoop/conf
               readOnly: true
+            - name: hadoop-common
+              mountPath: /opt/hadoop-3.3.4
       restartPolicy: Always
       volumes:
         - name: hdfs-config
           configMap:
             name: my-hdfs-config
-#        - name: hadoop-home
-#          hostPath:
-#            path: /opt/dtweave/hadoop-3.3.5
+        - name: hadoop-common
+          emptyDir: {}
   volumeClaimTemplates:
     - metadata:
         name: edits-dir
