@@ -53,12 +53,16 @@ hmaster:
 hregionserver:
 	@docker build --tag dtweave/hbase-hregionserver:v2.5.6-1.0.0 -f hbase/2.5.6/hregionserver/Dockerfile hbase/2.5.6/hregionserver
 
+.PHONY: hive-spark-common
+hive-spark-common:
+	@docker build --tag dtweave/hive-spark-common:hive3.1.3-spark3.4.1-1.0.0 -f hive-spark-common/hive3.1.3-spark3.4.1/Dockerfile hive-spark-common/hive3.1.3-spark3.4.1
+
 .PHONY: import_images
 import_images:
-#	@k3d image import dtweave/hadoop-common:v3.3.4 -c cluster1
-#	@k3d image import dtweave/hdfs-namenode:v3.3.4-1.0.0 -c cluster1
-#	@k3d image import dtweave/hdfs-journalnode:v3.3.4-1.0.0 -c cluster1
-	@k3d image import dtweave/hdfs-datanode:v3.3.4-1.0.0 -c cluster1
+	@#k3d image import dtweave/hadoop-common:v3.3.4 -c cluster1
+	@#k3d image import dtweave/hdfs-namenode:v3.3.4-1.0.0 -c cluster1
+	@k3d image import dtweave/hdfs-journalnode:v3.3.4-1.0.0 -c cluster1
+	@#k3d image import dtweave/hdfs-datanode:v3.3.4-1.0.0 -c cluster1
 #	@k3d image import bitnami/solr:8.11.2 -c develop-cluster
 #	@k3d image import dtweave/hbase-hmaster:v2.5.6-1.0.0 -c develop-cluster
 #	@k3d image import dtweave/hbase-hregionserver:v2.5.6-1.0.0 -c develop-cluster
