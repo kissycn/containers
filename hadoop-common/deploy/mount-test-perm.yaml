@@ -1,0 +1,178 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper-zookeeper
+  labels:
+    app: zookeeper
+spec:
+  ports:
+    - port: 2181
+      name: zk-client
+    - port: 2888
+      name: follower
+    - port: 3888
+      name: election
+  clusterIP: None
+  selector:
+    app: zookeeper
+  publishNotReadyAddresses: true
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: zookeeper
+  name: zookeeper
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: zookeeper
+  serviceName: zookeeper-zookeeper
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+    spec:
+      containers:
+        - name: zookeeper
+          image: bitnami/zookeeper:3.8
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 2181
+              name: client
+              protocol: TCP
+            - containerPort: 2888
+              name: follower
+              protocol: TCP
+            - containerPort: 3888
+              name: election
+              protocol: TCP
+          env:
+            - name: ALLOW_ANONYMOUS_LOGIN
+              value: "yes"
+          volumeMounts:
+            - name: data
+              mountPath: /bitnami/zookeeper
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            # upstream recommended max is 700M
+            storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-hdfs-journalnode
+  labels:
+    app: hdfs-journalnode
+    release: my-hdfs-journalnode
+  annotations:
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+spec:
+  ports:
+    - port: 8485
+      name: jn
+    - port: 8480
+      name: http
+  clusterIP: None
+  selector:
+    app: hdfs-journalnode
+    release: my-hdfs-journalnode
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: my-hdfs-journalnode
+  labels:
+    app: hdfs-journalnode
+    release: my-hdfs-journalnode
+spec:
+  serviceName: my-hdfs-journalnode
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hdfs-journalnode
+      release: my-hdfs-journalnode
+  template:
+    metadata:
+      labels:
+        app: hdfs-journalnode
+        release: my-hdfs-journalnode
+    spec:
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 10000
+      initContainers:
+        - name: init-hadoop-common
+          image: dtweave/hadoop-common:v3.3.4
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/bash
+          args:
+            - -ec
+            - |
+              cp -r /opt/software/hadoop-3.3.4/* /opt/hadoop-3.3.4
+              mkdir -p /hadoop/dfs/journal
+              chown -R 10000:1000 /hadoop/dfs/journal
+              chown -R 10000:1000 /opt/hadoop-3.3.4
+          securityContext:
+            runAsUser: 0
+          volumeMounts:
+            - name: hadoop-common
+              mountPath: /opt/hadoop-3.3.4
+            - name: edits-dir
+              mountPath: /hadoop/dfs/journal
+              subPath: journal
+      containers:
+        - name: hdfs-journalnode
+          image: dtweave/hdfs-journalnode:v3.3.4-1.0.0
+          securityContext:
+            runAsUser: 10000
+            runAsGroup: 1000
+            runAsNonRoot: true
+            privileged: false
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ "ALL" ]
+            seccompProfile:
+              type: "RuntimeDefault"
+          ports:
+            - containerPort: 8485
+              name: jn
+            - containerPort: 8480
+              name: http
+          env:
+            - name: WAIT_ZK_TO_READY
+              value: "false"
+          volumeMounts:
+            - name: edits-dir
+              mountPath: /hadoop/dfs/journal
+              subPath: journal
+            - name: hdfs-config
+              mountPath: /hadoop/conf
+              readOnly: true
+            - name: hadoop-common
+              mountPath: /opt/hadoop-3.3.4
+      restartPolicy: Always
+      volumes:
+        - name: hdfs-config
+          configMap:
+            name: my-hdfs-config
+        - name: hadoop-common
+          emptyDir: {}
+  volumeClaimTemplates:
+    - metadata:
+        name: edits-dir
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "10Gi"
