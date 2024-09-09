@@ -14,11 +14,14 @@ ENV HOME="/" \
     OS_NAME="linux"
 
 COPY hadoop-3.3.4 /opt/software/hadoop-3.3.4
+COPY *.sh /opt/scripts/hdfs/3.3.4/
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN apt-get update && apt-get upgrade -y && \
     apt-get clean && rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+RUN /opt/scripts/hdfs/3.3.4/setup.sh
 
 ENV APP_VERSION="3.3.4" \
     APP_NAME="hadoop-common"
