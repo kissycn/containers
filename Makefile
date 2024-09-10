@@ -45,6 +45,10 @@ namenode:
 datanode:
 	@docker build --tag dtweave/hdfs-datanode:v3.3.4-1.0.0 -f hadoop-hdfs/3.3.4/datanode/Dockerfile hadoop-hdfs/3.3.4/datanode
 
+.PHONY: hive
+hive:
+	@docker build --tag dtweave/hive-metastore:v3.1.3-1.0.0 -f hive/3.1.3/metastore/Dockerfile hive/3.1.3/metastore/
+
 .PHONY: hmaster
 hmaster:
 	@docker build --tag dtweave/hbase-hmaster:v2.5.6-1.0.0 -f hbase/2.5.6/hmaster/Dockerfile hbase/2.5.6/hmaster
@@ -59,17 +63,19 @@ hive-spark-common:
 
 .PHONY: import_images
 import_images:
-	@#k3d image import dtweave/hadoop-common:v3.3.4 -c cluster1
-	@#k3d image import dtweave/hdfs-namenode:v3.3.4-1.0.0 -c cluster1
-	@k3d image import dtweave/hdfs-journalnode:v3.3.4-1.0.0 -c cluster1
-	@#k3d image import dtweave/hdfs-datanode:v3.3.4-1.0.0 -c cluster1
+	@k3d image import dtweave/hive-metastore:v3.1.3-1.0.0 -c kb-playground
+#	@k3d image import dtweave/zookeeper:v3.7-1.0.0 -c kb-playground
+#	@k3d image import dtweave/hadoop-common:v3.3.4 -c kb-playground
+#	@k3d image import dtweave/hdfs-namenode:v3.3.4-1.0.0 -c kb-playground
+#	@k3d image import dtweave/hdfs-journalnode:v3.3.4-1.0.0 -c kb-playground
+#	@k3d image import dtweave/hdfs-datanode:v3.3.4-1.0.0 -c kb-playground
 #	@k3d image import bitnami/solr:8.11.2 -c develop-cluster
 #	@k3d image import dtweave/hbase-hmaster:v2.5.6-1.0.0 -c develop-cluster
 #	@k3d image import dtweave/hbase-hregionserver:v2.5.6-1.0.0 -c develop-cluster
 #	@k3d image import dtweave/hdfs-journalnode:v3.3.4-1.0.0 -c develop-cluster
 #	@k3d image import dtweave/hdfs-namenode:v3.3.4-1.0.0 -c develop-cluster
 #	@k3d image import dtweave/hdfs-datanode:v3.3.4-1.0.0 -c develop-cluster
-#	@k3d image import dtweave/zookeeper:v3.7-1.0.0 -c develop-cluster
+
 
 .PHONY: minideb-build
 minideb-build:
