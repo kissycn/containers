@@ -52,7 +52,9 @@ spec:
             - |
               cp -r /opt/software/hadoop-3.3.4/* /opt/hadoop-3.3.4
               mkdir -p /hive/metadata
+              mkdir -p /hadoop/conf
               chown -R 10000:1000 /hive/metadata
+              chown -R 10000:1000 /hadoop/conf
               chown -R 10000:1000 /opt/hadoop-3.3.4
           securityContext:
             runAsUser: 0
@@ -88,12 +90,18 @@ spec:
           volumeMounts:
             - name: hadoop-common
               mountPath: /opt/hadoop-3.3.4
-            - name: hive-metastore-config
-              mountPath: /hive/conf/hive-site.xml
-              subPath: hive-site.xml
             - name: metadata
               mountPath: /hive/metadata
               subPath: metadata
+            - name: hive-metastore-config
+              mountPath: /hive/conf/hive-site.xml
+              subPath: hive-site.xml
+            - name: hadoop-core-config
+              mountPath: /hadoop/conf/core-site.xml
+              subPath: core-site.xml
+            - name: hadoop-hdfs-config
+              mountPath: /hadoop/conf/hdfs-site.xml
+              subPath: hdfs-site.xml 
       restartPolicy: Always
       volumes:
         - name: hadoop-common
@@ -101,6 +109,12 @@ spec:
         - name: hive-metastore-config
           configMap:
             name: hive-metastore-config
+        - name: hadoop-core-config
+          configMap:
+            name: k8shadoop-hadoop-core-config
+        - name: hadoop-hdfs-config
+          configMap:
+            name: k8shadoop-namenode-config
   volumeClaimTemplates:
     - metadata:
         name: metadata
