@@ -23,10 +23,8 @@ export PATH=$PATH:$HIVE_HOME/bin
 export PATH=$PATH:$HIVE_HOME/sbin
 
 # System users (when running with a privileged user)
-export HIVE_DAEMON_USER="hive"
-export HIVE_DAEMON_GROUP="hive"
-export HADOOP_DAEMON_USER="hadoop"
-export HADOOP_DAEMON_GROUP="hadoop"
+export HIVE_DAEMON_USER="hadoop"
+export HIVE_DAEMON_GROUP="hadoop"
 
 # Hadoop environment
 export HADOOP_DATA_DIR="/hadoop"
