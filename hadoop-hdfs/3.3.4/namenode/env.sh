@@ -18,7 +18,7 @@ export HADOOP_VOLUME_DIR="/hadoop/dfs"
 export MODULE="${MODULE:-namenode}"
 # Paths
 export HADOOP_HOME="${HADOOP_HOME_DIR}/hadoop-3.3.4"
-export DFS_NAME_NODE_EDITS_DIR="${HADOOP_VOLUME_DIR}/name"
+export DFS_NAME_NODE_EDITS_DIR="${HADOOP_VOLUME_DIR}/metadata"
 export HADOOP_CONF_DIR="${HADOOP_HOME_DIR}/conf"
 export HADOOP_LOG_DIR="${HADOOP_HOME_DIR}/logs"
 

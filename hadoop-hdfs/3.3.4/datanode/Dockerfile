@@ -25,7 +25,7 @@ RUN /opt/scripts/hdfs/3.3.4/datanode/setup.sh
 
 ENV APP_VERSION="3.3.4" \
     APP_NAME="datanode" \
-    HADOOP_HOME="/opt/hadoop-3.3.4" \
+    HADOOP_HOME="/opt/kubeemr/hadoop-3.3.4" \
     PATH=$PATH:$HADOOP_HOME/bin \
     PATH=$PATH:$HADOOP_HOME/sbin
 
