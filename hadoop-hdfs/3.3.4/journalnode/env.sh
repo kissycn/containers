@@ -12,18 +12,16 @@
 # shellcheck disable=SC1090,SC1091
 . /opt/scripts/libs/liblog.sh
 
-export HADOOP_DATA_DIR="/hadoop"
+export HADOOP_HOME_DIR="/opt/kubeemr"
 export HADOOP_VOLUME_DIR="/hadoop/dfs"
 # Logging configuration
 export MODULE="${MODULE:-journalnode}"
 # Paths
-export HADOOP_HOME_DIR="/opt/hadoop-3.3.4"
-export HADOOP_HOME="${HADOOP_HOME:-${HADOOP_HOME_DIR}}"
+export HADOOP_HOME="${HADOOP_HOME_DIR}/hadoop-3.3.4"
 
-export DFS_NAME_NODE_NAME_DIR="${DFS_NAME_NODE_NAME_DIR:-${HADOOP_DATA_DIR}/dfs/metadata}"
-export DFS_JOURNAL_NODE_EDITS_DIR="${DFS_JOURNAL_NODE_EDITS_DIR:-${HADOOP_DATA_DIR}/dfs/journal}"
-export HADOOP_CONF_DIR="${HADOOP_DATA_DIR}/conf"
-export HADOOP_LOG_DIR="${HADOOP_DATA_DIR}/logs"
+export DFS_JOURNAL_NODE_EDITS_DIR="${HADOOP_VOLUME_DIR}/journal"
+export HADOOP_CONF_DIR="${HADOOP_HOME_DIR}/conf"
+export HADOOP_LOG_DIR="${HADOOP_HOME_DIR}/logs"
 
 export PATH=$PATH:$HADOOP_HOME/bin
 export PATH=$PATH:$HADOOP_HOME/sbin

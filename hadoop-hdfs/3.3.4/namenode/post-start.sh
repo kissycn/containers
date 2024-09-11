@@ -24,7 +24,7 @@ else
     HADOOP_OWNERSHIP_USER=""
 fi
 # Ensure directories used by JournalNode exist and have proper ownership and permissions
-for dir in "$HADOOP_DATA_DIR" "$HADOOP_VOLUME_DIR" "$DFS_NAME_NODE_NAME_DIR" "$DFS_JOURNAL_NODE_EDITS_DIR" "$HADOOP_CONF_DIR" "$HADOOP_LOG_DIR"; do
+for dir in "$HADOOP_HOME_DIR" "$HADOOP_VOLUME_DIR" "$DFS_NAME_NODE_EDITS_DIR" "$HADOOP_CONF_DIR" "$HADOOP_LOG_DIR"; do
     ensure_dir_exists "$dir" "$HADOOP_OWNERSHIP_USER"
 done
 # Ensure NameNode is initialized
