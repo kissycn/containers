@@ -7,7 +7,7 @@
 namenode_initialize() {
   info "** Initialize NameNode **"
   CURRENT_INDEX=$(echo $CURRENT_POD | awk -F '-' '{print $NF}')
-  _METADATA_DIR=${DFS_NAME_NODE_NAME_DIR}/current
+  _METADATA_DIR=${DFS_NAME_NODE_EDITS_DIR}/current
 
   if [[ "$CURRENT_INDEX" -eq 0 ]]; then
       if [[ ! -d $_METADATA_DIR ]]; then

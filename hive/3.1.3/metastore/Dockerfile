@@ -26,8 +26,8 @@ RUN /opt/scripts/hive/3.1.3/metastore/setup.sh
 
 ENV APP_VERSION="3.1.3" \
     APP_NAME="hive-metastore" \
-    HIVE_HOME="/opt/hive-3.1.3" \
-    HADOOP_HOME="/opt/hadoop-3.3.4" \
+    HIVE_HOME="/opt/kubeemr/hive/hive-3.1.3" \
+    HADOOP_HOME="/opt/kubeemr/hadoop/hadoop-3.3.4" \
     PATH=$PATH:$HIVE_HOME/bin \
     PATH=$PATH:$HIVE_HOME/sbin
 

@@ -14,7 +14,7 @@ set -o pipefail
 # Load JournalNode environment variables
 . /opt/scripts/hive/3.1.3/metastore/env.sh
 
-START_COMMAND=("${HIVE_HOME_DIR}/bin/hive" "--service" "metastore")
+START_COMMAND=("${HIVE_HOME}/bin/hive" "--service" "metastore")
 
 info "** Starting HiveMetaStore **"
 if am_i_root; then

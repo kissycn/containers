@@ -14,7 +14,7 @@
 
 export MODULE="${MODULE:-hivemetastore}"
 # Basic path
-export HIVE_HOME_DIR="/opt/kubeemr"
+export HIVE_HOME_DIR="/opt/kubeemr/hive"
 export HIVE_VOLUME_DIR="/hive"
 
 # Path
@@ -31,7 +31,7 @@ export HIVE_DAEMON_USER="hadoop"
 export HIVE_DAEMON_GROUP="hadoop"
 
 # Hadoop environment
-export HADOOP_HOME_DIR="/opt/kubeemr"
+export HADOOP_HOME_DIR="/opt/kubeemr/hadoop"
 export HADOOP_HOME="${HADOOP_HOME_DIR}/hadoop-3.3.4"
 export HADOOP_CONF_DIR="${HADOOP_HOME_DIR}/conf"
 export HADOOP_LOG_DIR="${HADOOP_HOME_DIR}/logs"
