@@ -12,7 +12,7 @@
 # shellcheck disable=SC1090,SC1091
 . /opt/scripts/libs/liblog.sh
 
-export HADOOP_HOME_DIR="/opt/kubeemr"
+export HADOOP_HOME_DIR="/opt/kubeemr/hadoop"
 export HADOOP_VOLUME_DIR="/hadoop/dfs"
 # Logging configuration
 export MODULE="${MODULE:-journalnode}"

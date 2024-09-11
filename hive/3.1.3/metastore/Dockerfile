@@ -13,7 +13,7 @@ ENV HOME="/" \
     OS_FLAVOUR="debian-12" \
     OS_NAME="linux"
 
-COPY hive-3.1.3 /opt/hive-3.1.3
+COPY hive-3.1.3 /opt/kubeemr/hive/hive-3.1.3
 COPY *.sh /opt/scripts/hive/3.1.3/metastore/
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]

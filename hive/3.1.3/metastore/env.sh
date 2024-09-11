@@ -13,12 +13,16 @@
 . /opt/scripts/libs/liblog.sh
 
 export MODULE="${MODULE:-hivemetastore}"
-# Paths
-export HIVE_DATA_DIR="/hive"
-export HIVE_HOME_DIR="/opt/hive-3.1.3"
-export HIVE_HOME="${HIVE_HOME:-${HIVE_HOME_DIR}}"
-export HIVE_CONF_DIR="${HIVE_DATA_DIR}/conf"
-export HIVE_DATA_DIR="${HIVE_DATA_DIR}/metadata"
+# Basic path
+export HIVE_HOME_DIR="/opt/kubeemr"
+export HIVE_VOLUME_DIR="/hive"
+
+# Path
+export HIVE_HOME="${HIVE_HOME_DIR}/hive-3.1.3"
+export HIVE_CONF_DIR="${HIVE_HOME_DIR}/conf"
+export HIVE_DATA_DIR="${HIVE_VOLUME_DIR}/metadata"
+
+# Bin path
 export PATH=$PATH:$HIVE_HOME/bin
 export PATH=$PATH:$HIVE_HOME/sbin
 
@@ -27,11 +31,10 @@ export HIVE_DAEMON_USER="hadoop"
 export HIVE_DAEMON_GROUP="hadoop"
 
 # Hadoop environment
-export HADOOP_DATA_DIR="/hadoop"
-export HADOOP_HOME_DIR="/opt/hadoop-3.3.4"
-export HADOOP_HOME="${HADOOP_HOME:-${HADOOP_HOME_DIR}}"
-export HADOOP_CONF_DIR="${HADOOP_DATA_DIR}/conf"
-export HADOOP_LOG_DIR="${HADOOP_DATA_DIR}/logs"
+export HADOOP_HOME_DIR="/opt/kubeemr"
+export HADOOP_HOME="${HADOOP_HOME_DIR}/hadoop-3.3.4"
+export HADOOP_CONF_DIR="${HADOOP_HOME_DIR}/conf"
+export HADOOP_LOG_DIR="${HADOOP_HOME_DIR}/logs"
 
 # Metastore database connection params
 export DB_TYPE="${DB_TYPE:-mysql}"

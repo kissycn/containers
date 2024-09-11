@@ -17,9 +17,10 @@ set -o pipefail
 ensure_user_exists "$HIVE_DAEMON_USER" --uid 10000 --group "$HIVE_DAEMON_GROUP"
 
 # Ensure directories used by ZooKeeper exist and have proper ownership and permissions
-for dir in "$HIVE_HOME_DIR" "$HIVE_CONF_DIR" "$HIVE_DATA_DIR"; do
+for dir in "$HIVE_HOME" "$HIVE_HOME_DIR" "$HIVE_CONF_DIR" "$HIVE_DATA_DIR"; do
     ensure_dir_exists "$dir"
 done
 
-chown -R "$HIVE_DAEMON_USER":"$HIVE_DAEMON_GROUP" $HIVE_HOME_DIR
+chown -R "$HIVE_DAEMON_USER":"$HIVE_DAEMON_GROUP" $HIVE_HOME
+chown -R "$HIVE_DAEMON_USER":"$HIVE_DAEMON_GROUP" $HIVE_CONF_DIR
 chown -R "$HIVE_DAEMON_USER":"$HIVE_DAEMON_GROUP" $HIVE_CONF_DIR
