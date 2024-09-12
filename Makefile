@@ -57,6 +57,10 @@ hmaster:
 hregionserver:
 	@docker build --tag dtweave/hbase-hregionserver:v2.5.6-1.0.0 -f hbase/2.5.6/hregionserver/Dockerfile hbase/2.5.6/hregionserver
 
+.PHONY: spark
+spark:
+	@docker build --tag dtweave/spark-history:v3.4.3-1.0.0 -f spark/3.4.3/history/Dockerfile spark/3.4.3/history
+
 .PHONY: hive-spark-common
 hive-spark-common:
 	@docker build --tag dtweave/hive-spark-common:hive3.1.3-spark3.4.1-1.0.0 -f hive-spark-common/hive3.1.3-spark3.4.1/Dockerfile hive-spark-common/hive3.1.3-spark3.4.1

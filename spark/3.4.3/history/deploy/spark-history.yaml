@@ -1,0 +1,139 @@
+---
+# Source: hdfs/charts/hdfs-journalnode-k8s/templates/journalnode-statefulset.yaml
+# A headless service to create DNS records.
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-spark-history
+  labels:
+    app: spark-history
+    release: my-spark-history
+spec:
+  ports:
+    - port: 18080
+      name: history
+  clusterIP: None
+  selector:
+    app: spark-history
+    release: my-spark-history
+---
+# Source: hdfs/charts/hdfs-journalnode-k8s/templates/journalnode-statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: my-spark-history
+  labels:
+    app: spark-history
+    release: my-spark-history
+spec:
+  serviceName: my-spark-history
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spark-history
+      release: my-spark-history
+  template:
+    metadata:
+      labels:
+        app: spark-history
+        release: my-spark-history
+    spec:
+      securityContext:
+        fsGroupChangePolicy: Always
+        fsGroup: 1000
+      # initContainers:
+      #   - name: init-hadoop-common
+      #     image: dtweave/hadoop-common:v3.3.4
+      #     imagePullPolicy: IfNotPresent
+      #     command:
+      #       - /bin/bash
+      #     args:
+      #       - -ec
+      #       - |
+      #         cp -r /opt/software/hadoop-3.3.4/* /opt/hadoop-3.3.4
+      #         mkdir -p /hive/metadata
+      #         mkdir -p /hadoop/conf
+      #         chown -R 10000:1000 /hive/metadata
+      #         chown -R 10000:1000 /hadoop/conf
+      #         chown -R 10000:1000 /opt/hadoop-3.3.4
+      #     securityContext:
+      #       runAsUser: 0
+      #     volumeMounts:
+      #       - name: hadoop-common
+      #         mountPath: /opt/hadoop-3.3.4
+      #       - name: metadata
+      #         mountPath: /hive/metadata
+      #         subPath: metadata
+      containers:
+        - name: spark-history
+          image: dtweave/spark-history:v3.4.3-1.0.0
+          securityContext:
+            runAsUser: 10000
+            runAsGroup: 1000
+            runAsNonRoot: true
+            privileged: false
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ "ALL" ]
+            seccompProfile:
+              type: "RuntimeDefault"
+          ports:
+            - containerPort: 9083
+              name: meta
+          env:
+            - name: CURRENT_POD
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: DEBUG_MODEL
+              value: "true"
+          volumeMounts:
+            - name: spark-history-config
+              mountPath: /opt/kubeemr/spark/conf/
+          # volumeMounts:
+          #   - name: hadoop-common
+          #     mountPath: /opt/hadoop-3.3.4
+          #   - name: metadata
+          #     mountPath: /hive/metadata
+          #     subPath: metadata
+          #   - name: hive-metastore-config
+          #     mountPath: /hive/conf/hive-site.xml
+          #     subPath: hive-site.xml
+            - name: hadoop-core-config
+              mountPath: /opt/kubeemr/hadoop/conf/core-site.xml
+              subPath: core-site.xml
+            - name: hadoop-hdfs-config
+              mountPath: /opt/kubeemr/hadoop/conf/hdfs-site.xml
+              subPath: hdfs-site.xml 
+      restartPolicy: Always
+      volumes:
+        - name: spark-history-config
+          configMap:
+            name: spark-history-config
+        - name: hadoop-core-config
+          configMap:
+            name: k8shadoop-hadoop-core-config
+        - name: hadoop-hdfs-config
+          configMap:
+            name: k8shadoop-namenode-config
+      # volumes:
+      #   - name: hadoop-common
+      #     emptyDir: {}
+      #   - name: hive-metastore-config
+      #     configMap:
+      #       name: hive-metastore-config
+      #   - name: hadoop-core-config
+      #     configMap:
+      #       name: k8shadoop-hadoop-core-config
+      #   - name: hadoop-hdfs-config
+      #     configMap:
+      #       name: k8shadoop-namenode-config
+  # volumeClaimTemplates:
+  #   - metadata:
+  #       name: metadata
+  #     spec:
+  #       accessModes:
+  #         - "ReadWriteOnce"
+  #       resources:
+  #         requests:
+  #           storage: "1Gi"
